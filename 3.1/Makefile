@@ -18,8 +18,8 @@ hello: main.o
 
 #$(PROG): $(PROG_OBJ)
 #	$(CC) -c $@
-$main.o: objects.cpp objects.h main.cpp
-	g++ -c objects.cpp objects.h main.cpp
+$main.o: objects.cpp main.cpp
+	g++ -c objects.cpp main.cpp
 
 
 #$sfml-app: main.o
