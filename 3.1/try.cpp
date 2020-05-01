@@ -76,32 +76,6 @@ public:
 
     bool reflection;
 
-    /*
-    void draw(sf::RenderWindow &window)
-    {
-        CURRENT_FLAME += 0.005;
-        switch (current_direction)
-        {
-            case RIGHT:
-                this->obj_sprite.setTextureRect(sf::IntRect(300 * ((int) CURRENT_FLAME % 3), 203 * (((int) NUMBER_SLIDE / 3) % 3), 300, 203));
-                break;
-            case LEFT:
-                this->obj_sprite.setTextureRect(sf::IntRect(300 * ((int)CURRENT_FLAME % 3), 203 * (((int)NUMBER_SLIDE / 3) % 3), 300, 203));
-                break;
-            case UP:
-                this->obj_sprite.setTextureRect(sf::IntRect(300 * ((int)CURRENT_FLAME % 3), 203 * (((int)NUMBER_SLIDE / 3) % 3), 300, 203));
-                break;
-            case DOWN:
-                this->obj_sprite.setTextureRect(sf::IntRect(300 * ((int)CURRENT_FLAME % 3), 203 * (((int)NUMBER_SLIDE / 3) % 3), 300, 203));
-                break;
-            default:
-                break;
-            window.draw(obj_sprite);
-        }
-    }
-/*
-
-
 
 
         /**/

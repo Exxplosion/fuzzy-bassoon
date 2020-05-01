@@ -2,7 +2,9 @@
 #include <string>
 #include <iostream>
 
-#define GROUND$ 211
+#define GROUND$ 515
+
+#define SIZE_PICT$ 0.4
 
 class Game
 {
@@ -45,9 +47,7 @@ public:
     Object(const std::string name_file,
            const float obj_size_x,
            const float obj_size_y,
-           int pos_x, int pos_y, 
-           sf::Texture texture_,
-           sf::Sprite sprite_);
+           int pos_x, int pos_y);
 
     virtual void draw(sf::RenderWindow &window) = 0;
 };

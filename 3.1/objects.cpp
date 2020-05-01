@@ -3,15 +3,14 @@
 Object::Object(const std::string name_file,
        const float obj_size_x,
        const float obj_size_y,
-       int pos_x, int pos_y, sf::Texture texture_ = sf::Texture(),
-           sf::Sprite sprite_ = sf::Sprite()) : 
+       int pos_x, int pos_y) :
         velocity_obj(0, 0),
         acceleration_obj(0, 0),
         file_load_name(name_file),
         size_obj(obj_size_x, obj_size_y),
         pos_obj(pos_x, pos_y),
-        texture(texture_),
-        obj_sprite(sprite_)
+        texture(sf::Texture()),
+        obj_sprite(sf::Sprite())
         {
             image.loadFromFile(file_load_name);
             image.createMaskFromColor(sf::Color::Black);
@@ -60,33 +59,33 @@ void Hero::draw(sf::RenderWindow &window)
 
     if (this->current_direction == RIGHT)
     {
-        this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame), 0, 551, 509));
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), 0, SIZE_PICT$ * 551, SIZE_PICT$ * 509));
     }
     if (this->current_direction == LEFT)
-        this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame) + 551, 0, -551, 509));
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), 0, -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
 
     if (this->current_direction == JUMP_UP)
     {
         if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame), 509, 551, 530));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame)), SIZE_PICT$ * 509, SIZE_PICT$ * 551, SIZE_PICT$ * 530));
         else
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame) + 551, 509, -551, 530));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * 509, -SIZE_PICT$ * 551, SIZE_PICT$ * 530));
     }
 
     if (this->current_direction == JUMP_DOWN)
     {
         if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame), 509 + 530, 551, 502));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530), SIZE_PICT$ * 551, SIZE_PICT$ * 502));
         else
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame) + 551, 509 + 530, -551, 502));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530), -SIZE_PICT$ * 551, SIZE_PICT$ * 502));
     }
 
     if (this->current_direction == STAY)
     {
         if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame), 509 + 530 + 502, 551, 509));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530 + 502), SIZE_PICT$ * 551, SIZE_PICT$ * 509));
         else
-            this->obj_sprite.setTextureRect(sf::IntRect(551 * int(currentFrame) + 551, 509 + 530 + 502, -551, 509));
+            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530 + 502), -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
     }
 
     window.draw(this->obj_sprite);
@@ -161,21 +160,6 @@ void Hero::update(float time)
 
     this->velocity_obj.x = 0;
 }
-/*
-Game::Game(sf::Texture texture_ = sf::Texture(),
-    sf::Sprite sprite_ = sf::Sprite(), sf::Event event_ = sf::Event(),
-    sf::Clock clock_ = sf::Clock()):
-     window(sf::VideoMode(1280, 720), "GO"),
-     time_game(0.0),
-     Background(texture_),
-     sprite_background(sprite_),
-     event_game(event_),
-     clock_game(clock_)
-     {
-         Background.loadFromFile("maxresdefault.jpg");
-         sprite_background.setTexture(Background);
-     }
-*/
 
 Game::Game() : 
     window(sf::VideoMode(1280, 720), "GO"),
@@ -191,7 +175,7 @@ Game::Game() :
 
 void Game::run()
 {
-    Hero hero("Corgi_2.png", 551.0, 509.0, 0, GROUND$);
+    Hero hero("Corgi.png", SIZE_PICT$ * 551.0, SIZE_PICT$ * 509.0, 0, GROUND$);
 
     while(window.isOpen())
     {
