@@ -117,7 +117,6 @@ void Hero::draw(sf::RenderWindow &window)
         break;
     case INVINCIBLE_RIGHT:
         this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (1460 * int(currentFrame)), SIZE_PICT$ * 2053, SIZE_PICT$ * 1460, SIZE_PICT$ * 2053));
-        //this->obj_sprite.setOrigin();
         break;
     case GAME_OVER:
         this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), 0, -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
@@ -164,6 +163,8 @@ void Hero::update(float time)
     {
         this->velocity_obj.x = 0;
         this->ON_INVINCIBLE = false;
+        if(this->current_direction == INVINCIBLE_RIGHT)
+            this->obj_sprite.setPosition(this->pos_obj.x - 363, this->pos_obj.y);
         return;
     }
 
