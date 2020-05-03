@@ -1,32 +1,18 @@
-#тип компилятора 
-CC = g++
-#инструкции
-№CFLAGS = -Wall
-#название цели (слева)
-#PROG = try.o
-#цель справа
-#PROG_OBJ = try.cpp
+ALL = game;
+
+OBJ = main.o objects.o slime.o bulet.o skeleton.o
+CXXFLAGS += -std=c++17 -Wall -g 
 
 
-all: hello
+all: $(ALL)
 
-hello: main.o
-	g++ main.o objects.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-	./sfml-app
-#прибавление @ в начале команды(типа @echo ...) команда работает
-#в сайлент режиме, т.е. не выводиться в консоль
+game: $(OBJ)
+	$(CXX) $(CXXFLAGS) -o $@ -lsfml-graphics -lsfml-window -lsfml-system $^
 
-#$(PROG): $(PROG_OBJ)
-#	$(CC) -c $@
-$main.o: objects.cpp objects.h main.cpp
-	g++ -c objects.cpp objects.h main.cpp
+clean: 
+	$(RM) $(OBJ) $(ALL) .depend *~ * .bak *stackdump core*
 
+depend:
+	$(CXX) $(CXXFLAGS) -MM $(OBJ:.o=.cpp) >.depend
 
-#$sfml-app: main.o
-#	g++ main.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
-do:
-	./sfml-app
-#$@цель слева $@цель справа
-
-#clear:
-#	rm *.o
+-include .depend

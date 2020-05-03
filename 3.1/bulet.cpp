@@ -12,6 +12,7 @@ Bulet::Bulet(const std::string name_file,
         previous_direction(RIGHT),
         ON_GROUND(true)
         {
+            life = true;
             current_direction = STAY;
             acceleration_obj = {0, 0.0005};
             //velocity_obj = {0.3, -0.3};
@@ -22,9 +23,11 @@ Bulet::Bulet(const std::string name_file,
 
 void Bulet::draw(sf::RenderWindow &window)
 {
-    this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), 0, SIZE_PICT$ * 551, SIZE_PICT$ * 509));
-
-    window.draw(this->obj_sprite);
+    if(life){
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), 0, SIZE_PICT$ * 551, SIZE_PICT$ * 509));
+        window.draw(this->obj_sprite);
+    }
+    
 }
 
 

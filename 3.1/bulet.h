@@ -10,6 +10,7 @@ class Bulet : public Object
 
 private:
 
+bool life;
 
 public:
     enum Direction
