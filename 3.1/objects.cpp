@@ -9,6 +9,7 @@ Object::Object(const std::string name_file,
         file_load_name(name_file),
         size_obj(obj_size_x, obj_size_y),
         pos_obj(pos_x, pos_y),
+        health_points(0),
         texture(sf::Texture()),
         obj_sprite(sf::Sprite())
         {
@@ -28,7 +29,8 @@ Hero::Hero(const std::string name_file,
         Object(name_file, obj_size_x, obj_size_y, pos_x, pos_y),
         currentFrame(0.0),
         previous_direction(RIGHT),
-        ON_GROUND(true)
+        ON_GROUND(true),
+        COOLDOWN_INVINCIBLE(sf::seconds(3.0))
         {}
 
 void Hero::motion()
@@ -52,42 +54,76 @@ void Hero::motion()
             //hero.current_direction = Hero::JUMP_UP;
         }
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+    {
+        this->ON_INVINCIBLE = true;
+        if (this->previous_direction_2 > 7)
+        {
+            this->current_direction = INVINCIBLE_RIGHT;
+            this->velocity_obj.x = 1.0;
+        }
+        else 
+        {
+            this->current_direction = INVINCIBLE_LEFT;
+            this->velocity_obj.x = -1.0;
+        }
+    }
 }
 
 void Hero::draw(sf::RenderWindow &window)
 {
-
-    if (this->current_direction == RIGHT)
+    //this->current_direction = INVINCIBLE_LEFT;
+    switch (this->current_direction)
     {
-        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), 0, SIZE_PICT$ * 551, SIZE_PICT$ * 509));
-    }
-    if (this->current_direction == LEFT)
+    case JUMP_DOWN_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530), -SIZE_PICT$ * 551, SIZE_PICT$ * 502));
+        break;
+    case LEFT:
         this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), 0, -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
-
-    if (this->current_direction == JUMP_UP)
-    {
-        if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame)), SIZE_PICT$ * 509, SIZE_PICT$ * 551, SIZE_PICT$ * 530));
-        else
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * 509, -SIZE_PICT$ * 551, SIZE_PICT$ * 530));
+        break;
+    case JUMP_UP_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * 509, -SIZE_PICT$ * 551, SIZE_PICT$ * 530));
+        break;
+    case STAY_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530 + 502), -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
+        break;
+    case GOT_HIT_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (615 * int(currentFrame) + 615), SIZE_PICT$ * 3397, -SIZE_PICT$ * 615, SIZE_PICT$ * 481));
+        break;
+    case DIZZY_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * 2902, -SIZE_PICT$ * 551, SIZE_PICT$ * 492));
+        break;
+    case INVINCIBLE_LEFT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (1460 * int(currentFrame) + 1460), SIZE_PICT$ * 2053, -SIZE_PICT$ * 1460, SIZE_PICT$ * 2053));
+        break;
+    case JUMP_DOWN_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530), SIZE_PICT$ * 551, SIZE_PICT$ * 502));
+        break;
+    case RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), 0, SIZE_PICT$ * 551, SIZE_PICT$ * 509));
+        break;
+    case JUMP_UP_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame)), SIZE_PICT$ * 509, SIZE_PICT$ * 551, SIZE_PICT$ * 530));
+        break;
+    case STAY_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530 + 502), SIZE_PICT$ * 551, SIZE_PICT$ * 509));
+        break;
+    case GOT_HIT_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (615 * int(currentFrame) + 615), SIZE_PICT$ * 3397, SIZE_PICT$ * 615, SIZE_PICT$ * 481));
+        break;
+    case DIZZY_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * 2902, SIZE_PICT$ * 551, SIZE_PICT$ * 492));
+        break;
+    case INVINCIBLE_RIGHT:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (1460 * int(currentFrame)), SIZE_PICT$ * 2053, SIZE_PICT$ * 1460, SIZE_PICT$ * 2053));
+        break;
+    case GAME_OVER:
+        this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), 0, -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
+        break;
+    default:
+        break;
     }
-
-    if (this->current_direction == JUMP_DOWN)
-    {
-        if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530), SIZE_PICT$ * 551, SIZE_PICT$ * 502));
-        else
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530), -SIZE_PICT$ * 551, SIZE_PICT$ * 502));
-    }
-
-    if (this->current_direction == STAY)
-    {
-        if (this->previous_direction == RIGHT)
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * 551 * int(currentFrame), SIZE_PICT$ *(509 + 530 + 502), SIZE_PICT$ * 551, SIZE_PICT$ * 509));
-        else
-            this->obj_sprite.setTextureRect(sf::IntRect(SIZE_PICT$ * (551 * int(currentFrame) + 551), SIZE_PICT$ * (509 + 530 + 502), -SIZE_PICT$ * 551, SIZE_PICT$ * 509));
-    }
-
     window.draw(this->obj_sprite);
 }
 
@@ -111,8 +147,8 @@ void Hero::update(float time)
 
     currentFrame += 0.005 * time;
 
-    if (currentFrame > 4)  //fix this + spritesheet @TODO 
-        currentFrame -= 4;
+    if (currentFrame > 8) //TODO: fix this + spritesheet
+        currentFrame -= 8;
 
     this->obj_sprite.setPosition(this->pos_obj.x, this->pos_obj.y);
 
@@ -123,42 +159,74 @@ void Hero::update(float time)
         this->previous_direction = this->current_direction;
     }
 
-    if (this->velocity_obj.y < 0)
+    if (this->ON_INVINCIBLE)
     {
-        this->current_direction = JUMP_UP;
+        this->velocity_obj.x = 0;
+        this->ON_INVINCIBLE = false;
+        if(this->current_direction == INVINCIBLE_RIGHT)
+            this->obj_sprite.setPosition(this->pos_obj.x - 363, this->pos_obj.y);
+        return;
     }
-    else
+
+    if (this->velocity_obj.x > 0 && this->velocity_obj.y > 0)
     {
-        if (this->velocity_obj.y > 0)
+        this->current_direction = JUMP_UP_RIGHT;
+    }
+    else if (this->velocity_obj.x > 0 && this->velocity_obj.y < 0)
+    {
+        this->current_direction = JUMP_DOWN_RIGHT;
+    }
+    else if (this->velocity_obj.x < 0 && this->velocity_obj.y > 0)
+    {
+        this->current_direction = JUMP_UP_LEFT;
+    }
+    else if (this->velocity_obj.x < 0 && this->velocity_obj.y < 0)
+    {
+        this->current_direction = JUMP_DOWN_LEFT;
+    }
+    else if (this->velocity_obj.x > 0 && this->velocity_obj.y == 0)
+    {
+        this->current_direction = RIGHT;
+    }
+    else if (this->velocity_obj.x < 0 && this->velocity_obj.y == 0)
+    {
+        this->current_direction = LEFT;
+    }
+    else if (this->velocity_obj.x == 0 && this->velocity_obj.y < 0)
+    {
+        if (this->previous_direction_2 < 8)
         {
-            this->current_direction = JUMP_DOWN;
+            this->current_direction = JUMP_DOWN_LEFT;
         }
         else
         {
-            if (this->velocity_obj.x > 0)
-            {
-                this->current_direction = RIGHT;
-            }
-            else
-            {
-                if (this->velocity_obj.x < 0)
-                {
-                    this->current_direction = LEFT;
-                }
-                else
-                {
-                    this->current_direction = STAY;
-                }
-            }
+            this->current_direction = JUMP_DOWN_RIGHT;
+        }
+    }
+    else if (this->velocity_obj.x == 0 && this->velocity_obj.y > 0)
+    {
+        if (this->previous_direction_2 < 8)
+        {
+            this->current_direction = JUMP_UP_LEFT;
+        }
+        else
+        {
+            this->current_direction = JUMP_UP_RIGHT;
+        }
+    }
+    else
+    {
+        if (this->previous_direction_2 < 8)
+        {
+            this->current_direction = STAY_LEFT;
+        }
+        else
+        {
+            this->current_direction = STAY_RIGHT;
         }
     }
 
-    if (this->previous_direction_2 != this->current_direction)
-    {
-        currentFrame = 0;
-    }
-
-    this->velocity_obj.x = 0;
+        this->velocity_obj.x = 0;
 }
 
 Game::Game() : 
@@ -175,7 +243,7 @@ Game::Game() :
 
 void Game::run()
 {
-    Hero hero("Corgi.png", SIZE_PICT$ * 551.0, SIZE_PICT$ * 509.0, 0, GROUND$);
+    Hero hero("Corgi_2.png", SIZE_PICT$ * 551.0, SIZE_PICT$ * 509.0, 0, GROUND$);
 
     while(window.isOpen())
     {

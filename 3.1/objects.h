@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+//#include <Time.hpp>
 
 #define GROUND$ 515
 
@@ -44,6 +45,8 @@ public:
     sf::Vector2f velocity_obj;
     sf::Vector2f acceleration_obj;
 
+    short int health_points;
+
     Object(const std::string name_file,
            const float obj_size_x,
            const float obj_size_y,
@@ -58,13 +61,21 @@ class Hero : public Object
 public:
     enum Direction
     {
-        UP = 1,
-        DOWN,
-        LEFT,
+        LEFT = 1,
+        JUMP_UP_LEFT,
+        JUMP_DOWN_LEFT,
+        GOT_HIT_LEFT,
+        DIZZY_LEFT,
+        INVINCIBLE_LEFT,
+        STAY_LEFT,
         RIGHT,
-        JUMP_UP,
-        JUMP_DOWN,
-        STAY
+        JUMP_UP_RIGHT,
+        JUMP_DOWN_RIGHT,
+        GOT_HIT_RIGHT,
+        DIZZY_RIGHT,
+        INVINCIBLE_RIGHT,
+        STAY_RIGHT,
+        GAME_OVER
     };
 
     short int previous_direction;
@@ -72,7 +83,16 @@ public:
     short int current_direction;
     int NUMBER_SLIDE;
     double currentFrame;
+
     bool ON_GROUND;
+    bool ON_INVINCIBLE;
+
+    const sf::Time COOLDOWN_INVINCIBLE;
+    sf::Time recent_click;
+    sf::Time first_click;
+    sf::Time current_summary_time;
+    const sf::Time permissible_summary_time;
+    sf::Clock clock;
 
     virtual void draw(sf::RenderWindow &window);
 
