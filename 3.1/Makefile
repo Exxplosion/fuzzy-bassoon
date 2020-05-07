@@ -1,6 +1,6 @@
 ALL = game;
 
-OBJ = main.o objects.o slime.o bulet.o skeleton.o
+OBJ = main.o objects.o slime.o bulet.o skeleton.o gun.o
 CXXFLAGS += -std=c++17 -Wall -g 
 
 

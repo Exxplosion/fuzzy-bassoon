@@ -43,8 +43,13 @@ void Bulet::update(float time, sf::RenderWindow &window){
     if (!this->ON_GROUND)
         this->velocity_obj.y = this->velocity_obj.y + acceleration_obj.y * time;
 
-    this->pos_obj.y += this->velocity_obj.y * time;
-    this->ON_GROUND = false;
+if (!this->ON_GROUND)
+        this->velocity_obj.y = this->velocity_obj.y + acceleration_obj.y * time;
+
+    if(velocity_obj.y != 0){
+        this->pos_obj.y += this->velocity_obj.y * time;
+        this->ON_GROUND = false;
+    }
 
     /* if (this->pos_obj.y > GROUND$)
     {
@@ -72,6 +77,7 @@ bool Bulet::IsWall(){
         velocity_obj = {0, 0};
         pos_obj.y = GROUND$;
         this->ON_GROUND = true;
+        life = false;
         return 1;
     }
     return 0;

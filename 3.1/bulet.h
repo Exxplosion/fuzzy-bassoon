@@ -8,11 +8,10 @@
 class Bulet : public Object
 {
 
-private:
+public:
 
 bool life;
 
-public:
     enum Direction
     {
         UP = 1,
@@ -40,7 +39,6 @@ public:
          const float obj_size_y,
          int pos_x, int pos_y);
 
-    //Bulet(const Bulet&) = delete;
 
     void update(float time, sf::RenderWindow &window);
 };
